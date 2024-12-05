@@ -1,17 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>대시보드</title>
 </head>
 <body>
-<h1>환영합니다, <%= user.username %>님!</h1>
-<p>이메일: <%= user.email %></p>
-
-<!-- 로그아웃 버튼 -->
-<form action="/auth/logout" method="POST">
-    <button type="submit">로그아웃</button>
-</form>
+<h1>안녕하세요, {{ user.username }}님!</h1>
+<p>현재 점수: {{ user.score }}</p>
+<a href="/logout">로그아웃</a>
 </body>
 </html>
