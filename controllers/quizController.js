@@ -45,8 +45,10 @@ exports.getQuestion = async (req, res) => {
 
 
 exports.submitAnswer = async (req, res) => {
+    console.log('User:', req.user);
     const { questionId, selectedOption } = req.body;
-    const userId = req.session.user.id;
+    const userId = req.user.id;
+
     try {
         const [question] = await pool.query('SELECT correct_answer FROM Questions WHERE id = ?', [questionId]);
         if (!question || question.length === 0) {
@@ -58,20 +60,23 @@ exports.submitAnswer = async (req, res) => {
 
         if (isCorrect) {
             await pool.query('UPDATE Users SET score = score + 1 WHERE id = ?', [userId]);
-            req.session.user.score += 1; // 세션의 사용자 점수 업데이트
-            res.redirect('/dashboard');
+            req.user.score += 1; // 세션의 사용자 점수 업데이트
+            req.session.save(() => {
+                res.redirect('/dashboard');
+            });
         } else {
             res.send(`
-        <script>
-          alert('답이 틀렸습니다!');
-          window.location.href = '/dashboard';
-        </script>
-      `);
+                <script>
+                    alert('답이 틀렸습니다!');
+                    window.location.href = '/dashboard';
+                </script>
+            `);
         }
     } catch (error) {
         console.error('Error submitting answer:', error);
         res.status(500).send('Error submitting answer');
     }
 };
+
 
 

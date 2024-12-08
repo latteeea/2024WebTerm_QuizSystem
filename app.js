@@ -4,11 +4,23 @@ const authRoutes = require('./routes/authRoutes');
 const nunjucks = require('nunjucks');
 const path = require('path');
 const quizRoutes = require('./routes/quizRoutes');
-const fs = require('fs');
+const passport = require('./passport/passport');
+const flash = require('connect-flash');
 
 
 
 const app = express();
+
+app.use(flash());
+
+app.use(session({
+    secret: 'taeran',
+    resave: false,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // Nunjucks 설정
 nunjucks.configure('views', {
@@ -21,12 +33,6 @@ app.set('view engine', 'html');
 
 // Middleware 설정
 app.use(express.urlencoded({ extended: false }));
-
-app.use(session({
-    secret: 'your_secret_key',
-    resave: false,
-    saveUninitialized: true,
-}));
 
 app.use((req, res, next) => {
     console.log(`Request received: ${req.method} ${req.url}`);
@@ -43,11 +49,13 @@ app.use('/', authRoutes);
 app.use('/quiz', quizRoutes);
 
 app.get('/dashboard', (req, res) => {
-    if (!req.session.user) {
+    console.log('User:', req.user);
+    if (!req.isAuthenticated()) {
         return res.redirect('/login');
     }
-    res.render('dashboard', { user: req.session.user });
+    res.render('dashboard', { user: req.user });
 });
+
 
 
 
