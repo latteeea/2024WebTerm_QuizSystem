@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>퀴즈 목록</title>
+</head>
+<body>
+<h1>퀴즈 목록</h1>
+<ul>
+  {% for quiz in quizzes %}
+  <li><a href="/quiz/quizzes/{{ quiz.id }}">Quiz {{ loop.index }}</a></li>
+  {% endfor %}
+</ul>
+</body>
+</html>
