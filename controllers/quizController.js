@@ -20,15 +20,16 @@ exports.getQuizzes = async (req, res) => {
     const categoryId = req.params.categoryId;
     try {
         const [quizzes] = await pool.query(
-            'SELECT * FROM Questions WHERE category_id = ? LIMIT 3',
+            'SELECT * FROM Questions WHERE category_id = ?',
             [categoryId]
         );
         res.render('quizzes', { quizzes, categoryId });
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching quizzes:', error);
         res.status(500).send('Error fetching quizzes');
     }
 };
+
 
 exports.getQuestion = async (req, res) => {
     const questionId = req.params.questionId;

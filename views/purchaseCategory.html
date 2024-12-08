@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>카테고리 등록권 구매</title>
+</head>
+<body>
+<h1>카테고리 등록권 구매</h1>
+<p>원하는 카테고리를 구매할 수 있습니다. 구매 시 점수가 10점 차감됩니다.</p>
+<form id="categoryForm" method="POST" action="/quiz/purchase/category">
+  <input type="hidden" id="categoryNameInput" name="categoryName" />
+  <button type="button" onclick="purchaseCategory()">구매하기</button>
+  <button type="button" onclick="window.location.href='/dashboard';">뒤로가기</button>
+</form>
+
+<script>
+  function purchaseCategory() {
+    const categoryName = prompt('추가할 카테고리 이름을 입력하세요:');
+    if (categoryName) {
+      document.getElementById('categoryNameInput').value = categoryName;
+      document.getElementById('categoryForm').submit();
+    } else {
+      alert('카테고리 이름을 입력하지 않았습니다.');
+    }
+  }
+</script>
+</body>
+</html>

@@ -6,5 +6,23 @@
 <body>
 <h1>{{ title }}</h1>
 <a href="/signup">회원가입</a> | <a href="/login">로그인</a>
+<h2>현재순위</h2>
+<table border="1">
+  <thead>
+  <tr>
+    <th>순위</th>
+    <th>사용자</th>
+    <th>점수</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for user in users %}
+  <tr>
+    <td>{{ loop.index }}</td>
+    <td>{{ user.username }}</td>
+    <td>{{ user.score }}</td>
+  </tr>
+  {% endfor %}
+
 </body>
 </html>

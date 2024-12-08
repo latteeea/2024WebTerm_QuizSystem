@@ -36,3 +36,15 @@ exports.logout = (req, res) => {
         res.redirect('/');
     });
 };
+
+exports.getLeaderboard = async (req, res) => {
+    try {
+        const [users] = await pool.query(
+            'SELECT username, score FROM Users ORDER BY score DESC LIMIT 10'
+        );
+        res.render('index', { title: '온라인 퀴즈 시스템', users });
+    } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        res.status(500).send('Error fetching leaderboard');
+    }
+};
