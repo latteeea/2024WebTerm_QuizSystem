@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>문제</title>
+</head>
+<body>
+<h1>문제</h1>
+<p>{{ question.question_text }}</p>
+<form method="POST" action="/quiz/submit">
+  <input type="hidden" name="questionId" value="{{ question.id }}">
+  <input type="radio" name="selectedOption" value="option_a" required /> {{ question.option_a }}<br>
+  <input type="radio" name="selectedOption" value="option_b" required /> {{ question.option_b }}<br>
+  <input type="radio" name="selectedOption" value="option_c" required /> {{ question.option_c }}<br>
+  <input type="radio" name="selectedOption" value="option_d" required /> {{ question.option_d }}<br>
+  <button type="submit">제출</button>
+</form>
+</body>
+</html>

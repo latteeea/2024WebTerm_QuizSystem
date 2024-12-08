@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>퀴즈 카테고리</title>
+</head>
+<body>
+<h1>퀴즈 카테고리</h1>
+<ul>
+    {% for category in categories %}
+    <li><a href="/quiz/categories/{{ category.id }}/quizzes">{{ category.name }}</a></li>
+    {% endfor %}
+</ul>
+{% if not categories %}
+<p>카테고리가 없습니다.</p>
+{% endif %}
+</body>
+</html>
