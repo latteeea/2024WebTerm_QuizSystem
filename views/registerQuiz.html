@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>퀴즈 등록</title>
+</head>
+<body>
+<h1>퀴즈 등록</h1>
+<form method="POST" action="/quiz/register/quiz">
+  <label for="categoryId">카테고리 선택:</label>
+  <select name="categoryId" id="categoryId" required>
+    {% for category in categories %}
+    <option value="{{ category.id }}">{{ category.name }}</option>
+    {% endfor %}
+  </select>
+  <br><br>
+  <label for="questionText">문제:</label>
+  <textarea name="questionText" id="questionText" required></textarea>
+  <br><br>
+  <label for="optionA">옵션 A:</label>
+  <input type="text" name="optionA" id="optionA" required />
+  <br><br>
+  <label for="optionB">옵션 B:</label>
+  <input type="text" name="optionB" id="optionB" required />
+  <br><br>
+  <label for="optionC">옵션 C:</label>
+  <input type="text" name="optionC" id="optionC" required />
+  <br><br>
+  <label for="optionD">옵션 D:</label>
+  <input type="text" name="optionD" id="optionD" required />
+  <br><br>
+  <label for="correctAnswer">정답:</label>
+  <select name="correctAnswer" id="correctAnswer" required>
+    <option value="option_a">옵션 A</option>
+    <option value="option_b">옵션 B</option>
+    <option value="option_c">옵션 C</option>
+    <option value="option_d">옵션 D</option>
+  </select>
+  <br><br>
+  <button type="submit">퀴즈 등록</button>
+  <button type="button" onclick="window.location.href='/dashboard';">뒤로가기</button>
+</form>
+</body>
+</html>
