@@ -6,12 +6,14 @@ const path = require('path');
 const quizRoutes = require('./routes/quizRoutes');
 const passport = require('./passport/passport');
 const flash = require('connect-flash');
-
+const cookieParser = require('cookie-parser');
 
 
 const app = express();
 
 app.use(flash());
+app.use(cookieParser());
+app.use(express.json());
 
 app.use(session({
     secret: 'taeran',

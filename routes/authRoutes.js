@@ -13,20 +13,14 @@ router.post('/signup', signup);
 router.get('/login', (req, res) => res.render('login'));
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
-        if (err) {
-            console.error('Authentication Error:', err);
-            return next(err);
-        }
+        if (err) return next(err);
         if (!user) {
-            console.log('Authentication Failed:', info);
+            res.cookie('login_error', 'Invalid credentials', { maxAge: 5000 });
             return res.redirect('/login');
         }
         req.logIn(user, (err) => {
-            if (err) {
-                console.error('Login Error:', err);
-                return next(err);
-            }
-            console.log('User Authenticated:', user);
+            if (err) return next(err);
+            res.cookie('username', user.username, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
             return res.redirect('/dashboard');
         });
     })(req, res, next);
@@ -45,11 +39,13 @@ router.get('/logout', (req, res) => {
 
 // 대시보드
 router.get('/dashboard', (req, res) => {
+    const username = req.cookies.username || 'Guest';
     if (!req.isAuthenticated()) {
         return res.redirect('/login');
     }
-    res.render('dashboard', { user: req.user });
+    res.render('dashboard', { user: req.user, username });
 });
+
 
 // 루트 페이지
 router.get('/', getLeaderboard);
