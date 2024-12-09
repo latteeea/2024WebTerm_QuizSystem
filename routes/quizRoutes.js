@@ -1,5 +1,5 @@
 const express = require('express');
-const { getCategories, getQuizzes, getQuestion, submitAnswer } = require('../controllers/quizController');
+const { getCategories, getQuizzes, getQuestion, submitAnswer,registerQuiz } = require('../controllers/quizController');
 const { isAuthenticated } = require('../middleware/authMiddleware');
 const pool = require('../db');
 
@@ -115,6 +115,41 @@ router.post('/register/quiz', isAuthenticated, async (req, res) => {
         res.status(500).send('Error registering quiz');
     }
 });
+
+// router.post('/api/quiz', isAuthenticated, async (req, res) => {
+//     const { categoryId, questionText, options, correctAnswer } = req.body;
+//     const userId = req.user.id;
+//
+//     try {
+//         if (!options || options.length !== 4) {
+//             return res.status(400).json({ error: 'Exactly 4 options are required.' });
+//         }
+//
+//         const [user] = await pool.query('SELECT score FROM Users WHERE id = ?', [userId]);
+//         if (user[0].score < 5) {
+//             return res.status(400).json({ error: 'Not enough score to register a quiz.' });
+//         }
+//
+//         await pool.query('UPDATE Users SET score = score - 5 WHERE id = ?', [userId]);
+//         await pool.query(
+//             'INSERT INTO Questions (category_id, question_text, option_a, option_b, option_c, option_d, correct_answer, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+//             [categoryId, questionText, options[0], options[1], options[2], options[3], correctAnswer, userId]
+//         );
+//
+//         res.status(201).json({ message: 'Quiz successfully registered.' });
+//     } catch (error) {
+//         console.error('Error registering quiz:', error);
+//         res.status(500).json({ error: 'An error occurred while registering the quiz.' });
+//     }
+// });
+
+router.get('/api/categories', isAuthenticated, getCategories);
+
+router.get('/api/categories/:categoryID/quizzes', isAuthenticated, getQuizzes);
+
+router.post('/api/quiz', isAuthenticated, registerQuiz);
+
+
 
 // 답안 제출
 router.post('/submit', isAuthenticated, submitAnswer);

@@ -78,5 +78,29 @@ exports.submitAnswer = async (req, res) => {
     }
 };
 
+exports.registerQuiz = async (req, res) => {
+    const { categoryId, questionText, options, correctAnswer } = req.body;
+    const userId = req.user.id;
+
+    try {
+        // 점수 확인
+        const hasEnoughScore = await checkUserScore(userId, 5);
+        if (!hasEnoughScore) {
+            return res.status(400).json({ error: '점수가 부족합니다.' });
+        }
+
+        // 퀴즈 저장
+        await pool.query('UPDATE Users SET score = score - 5 WHERE id = ?', [userId]);
+        await pool.query(
+            'INSERT INTO Questions (category_id, question_text, option_a, option_b, option_c, option_d, correct_answer, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [categoryId, questionText, options[0], options[1], options[2], options[3], correctAnswer, userId]
+        );
+
+        res.status(201).json({ message: '퀴즈가 성공적으로 등록되었습니다.' });
+    } catch (error) {
+        console.error('Error registering quiz:', error);
+        res.status(500).json({ error: '퀴즈 등록 중 오류가 발생했습니다.' });
+    }
+};
 
 
