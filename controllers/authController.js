@@ -36,7 +36,7 @@ exports.logout = (req, res) => {
     });
 };
 
-// 리더보드
+// 실시간 점수 랭킹 표
 exports.getLeaderboard = async (req, res) => {
     try {
         const [users] = await pool.query(
